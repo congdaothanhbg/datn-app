@@ -5,7 +5,7 @@
     <div class="display-comment" @if ($binhLuan->id != null) style="margin-left:40px;" @endif>
         <div class="comment-list">
             <div class="single-comment">
-                @if ($binhLuan->user_info['photo'])
+                @if ($binhLuan->user_info !== null && $binhLuan->user_info['photo'] !== null)
                     <img src="{{ $binhLuan->user_info['photo'] }}" alt="{{ $binhLuan->user_info['name'] }}">
                 @else
                     <img src="{{ asset('backend/img/avatar.png') }}" alt="{{ $binhLuan->user_info['name'] }}">
@@ -31,6 +31,6 @@
                 </div>
             </div>
         </div>
-        @include('frontend.pages.comment', ['dsBinhLuan' => $binhLuan->noi_dung_phan_hoi, 'depth' => $dep])
+        @include('frontend.pages.comment', ['dsBinhLuan' => $binhLuan->replies, 'depth' => $dep])
     </div>
 @endforeach

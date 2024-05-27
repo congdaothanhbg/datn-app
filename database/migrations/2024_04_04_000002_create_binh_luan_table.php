@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('bai_viet_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('binh_luan_id')->nullable();
             $table->text('noi_dung');
             $table->boolean('trang_thai')->default(1);
-            $table->text('noi_dung_phan_hoi')->nullable();
-            $table->unsignedBigInteger('binh_luan_id')->nullable();
-            $table->foreign('bai_viet_id')->references('id')->on('bai_viet')->onUpdate('cascade')->onDelete('set null');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
+            // $table->text('noi_dung_phan_hoi')->nullable();
+            $table->foreign('bai_viet_id')->references('id')->on('bai_viet')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('binh_luan_id')->references('id')->on('binh_luan')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

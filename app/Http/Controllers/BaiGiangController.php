@@ -62,32 +62,37 @@ class BaiGiangController extends Controller
     {
         $course = KhoaHoc::findOrFail($course_id);
         $lesson = BaiGiang::findOrFail($lesson_id);
-        return view('backend.admin.courses.lessons.edit', compact('course', 'lesson'));
+        return view('backend.khoa-hoc.bai-giang.edit')
+            ->with('khoaHoc', $course)
+            ->with('baiGiang', $lesson);
     }
 
     public function update(Request $request, $course_id, $lesson_id)
     {
         $request->validate([
-            'lesson_number' => 'required|numeric',
-            'lesson_title' => 'required',
-            'lesson_content' => 'required',
+            'thu_tu' => 'required|numeric|min:1',
+            'ten_bai_giang' => 'required|string',
+            'noi_dung' => 'required|string',
+            'hinh_anh' => 'string|nullable',
+            'video' => 'string|nullable',
+            'trang_thai' => 'boolean'
         ]);
 
         $course = KhoaHoc::findOrFail($course_id);
         $lesson = BaiGiang::findOrFail($lesson_id);
         $lesson->update($request->all());
 
-        return redirect()->route('backend.admin.courses.index')
-            ->with('success', 'BaiGiang updated successfully');
+        return redirect()->route('khoa-hoc.bai-giang.index', $course)
+            ->with('success', 'Cập nhật bài giảng thành công.');
     }
 
     public function destroy($course_id, $lesson_id)
     {
-        $course = KhoaHoc::findOrFail($course_id);
+        $khoaHoc = KhoaHoc::findOrFail($course_id);
         $lesson = BaiGiang::findOrFail($lesson_id);
         $lesson->delete();
 
-        return redirect()->route('backend.admin.courses.lessons.index')
-            ->with('success', 'BaiGiang deleted successfully');
+        return redirect(route('khoa-hoc.bai-giang.index', $khoaHoc))
+            ->with('success', 'Xoá bài giảng thành công.');
     }
 }

@@ -39,7 +39,6 @@
                                 <th>ID</th>
                                 <th>Thứ tự</th>
                                 <th>Tên bài giảng</th>
-                                <th>Slug</th>
                                 <th>Nội dung</th>
                                 <th class="col-2">Hình ảnh</th>
                                 <th class="col-2">Video</th>
@@ -52,7 +51,6 @@
                                 <th>ID</th>
                                 <th>Thứ tự</th>
                                 <th>Tên bài giảng</th>
-                                <th>Slug</th>
                                 <th>Nội dung</th>
                                 <th class="col-2">Hình ảnh</th>
                                 <th class="col-2">Video</th>
@@ -63,10 +61,9 @@
                         <tbody>
                             @foreach ($dsBaiGiang as $baiGiang)
                                 <tr>
-                                    <th scope="row">{{ $baiGiang->id }}</th>
+                                    <th>{{ $baiGiang->id }}</th>
                                     <td>{{ $baiGiang->thu_tu }}</td>
                                     <td>{{ $baiGiang->ten_bai_giang }}</td>
-                                    <td>{{ $baiGiang->slug }}</td>
                                     <td>{{ $baiGiang->noi_dung }}</td>
                                     <td class="col-2">{{ $baiGiang->hinh_anh }}</td>
                                     <td class="col-2">{{ $baiGiang->video }}</td>
@@ -81,8 +78,7 @@
                                             @csrf
                                             @method('delete')
                                             <a href="{{ route('khoa-hoc.bai-giang.destroy', [$khoaHoc, $baiGiang]) }}"
-                                                onclick="event.preventDefault(); this.closest('form').submit();"
-                                                class="btn btn-danger btn-sm">
+                                                class="btn btn-danger btn-sm dltBtn">
                                                 Xoá bỏ
                                             </a>
                                         </form>

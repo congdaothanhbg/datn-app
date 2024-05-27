@@ -1,11 +1,11 @@
 @extends('user.layouts.master')
-@section('title', 'E-SHOP || Comment Page')
+@section('title', 'Bình luận')
 @section('main-content')
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="row">
             <div class="col-md-12">
-                @include('backend.layouts.notification')
+                @include('backend.layouts.thong-bao')
             </div>
         </div>
         <div class="card-header py-3">
@@ -18,7 +18,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Author</th>
+                                <th>Người đăng</th>
                                 <th>Bài viết</th>
                                 <th>Nội dung</th>
                                 <th>Ngày đăng</th>
@@ -29,7 +29,7 @@
                         <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Author</th>
+                                <th>Người đăng</th>
                                 <th>Bài viết</th>
                                 <th>Nội dung</th>
                                 <th>Ngày đăng</th>
@@ -79,7 +79,7 @@
                     </table>
                     <span style="float:right">{{ $dsBinhLuan->links() }}</span>
                 @else
-                    <h6 class="text-center">No post comments found!!!</h6>
+                    <h6 class="text-center">Không tìm thấy bình luận nào.</h6>
                 @endif
             </div>
         </div>

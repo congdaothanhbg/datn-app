@@ -24,27 +24,24 @@ class AdminController extends Controller
         foreach ($data as $key => $value) {
             $array[++$key] = [$value->day_name, $value->count];
         }
-        //  return $data;
         return view('backend.index')->with('users', json_encode($array));
     }
 
     public function profile()
     {
         $profile = Auth()->user();
-        // return $profile;
         return view('backend.users.profile')->with('profile', $profile);
     }
 
     public function profileUpdate(Request $request, $id)
     {
-        // return $request->all();
         $user = User::findOrFail($id);
         $data = $request->all();
         $status = $user->fill($data)->save();
         if ($status) {
-            request()->session()->flash('success', 'Successfully updated your profile');
+            request()->session()->flash('success', 'Cập nhật hồ sơ thành công.');
         } else {
-            request()->session()->flash('error', 'Please try again!');
+            request()->session()->flash('error', 'Đã xảy ra lỗi! Vui lòng thử lại.');
         }
         return redirect()->back();
     }
@@ -69,12 +66,8 @@ class AdminController extends Controller
 
     public function storageLink()
     {
-        // check if the storage folder already linked;
         if (File::exists(public_path('storage'))) {
-            // removed the existing symbolic link
             File::delete(public_path('storage'));
-
-            //Regenerate the storage link folder
             try {
                 Artisan::call('storage:link');
                 request()->session()->flash('success', 'Liên kết kho lưu trữ thành công.');

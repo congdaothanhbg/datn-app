@@ -1,10 +1,10 @@
 @extends('user.layouts.master')
 
-@section('title','Comment Edit')
+@section('title','Chỉnh sửa bình luận')
 
 @section('main-content')
 <div class="card">
-  <h5 class="card-header">Comment Edit</h5>
+  <h5 class="card-header">Chỉnh sửa bình luận</h5>
   <div class="card-body">
     <form action="{{route('user.post-comment.update',$comment->id)}}" method="POST">
       @csrf

@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Session;
 
 class FrontendController extends Controller
 {
-
     public function index(Request $request)
     {
         return redirect()->route($request->user()->role);
@@ -62,14 +61,15 @@ class FrontendController extends Controller
 
     public function timKiemBaiViet(Request $request)
     {
-        // return $request->all();
         $dsBaiVietGanDay = BaiViet::where('trang_thai', 1)->orderBy('id', 'DESC')->limit(3)->get();
         $baiViets = BaiViet::orwhere('title', 'like', '%' . $request->search . '%')
             ->orwhere('noi_dung', 'like', '%' . $request->search . '%')
             ->orwhere('slug', 'like', '%' . $request->search . '%')
             ->orderBy('id', 'DESC')
             ->paginate(8);
-        return view('frontend.pages.bai-viet')->with('dsBaiViet', $baiViets)->with('dsBaiVietGanDay', $dsBaiVietGanDay);
+        return view('frontend.pages.bai-viet')
+            ->with('dsBaiViet', $baiViets)
+            ->with('dsBaiVietGanDay', $dsBaiVietGanDay);
     }
 
     public function boLocBaiViet(Request $request)
@@ -129,6 +129,15 @@ class FrontendController extends Controller
             ->with('dsBaiGiang', $dsBaiGiang);
     }
 
+    public function chiTietBaiGiang($khoahocslug, $baigiangslug)
+    {
+        $khoaHoc = KhoaHoc::where('slug', $khoahocslug)->firstOrFail();
+        $baiGiang = BaiGiang::where('slug', $baigiangslug)->firstOrFail();
+        return view('frontend.khoa-hoc.chi-tiet-bai-giang')
+            ->with('khoaHoc', $khoaHoc)
+            ->with('baiGiang', $baiGiang);
+    }
+
     public function deThi($khoahocslug)
     {
         $khoaHoc = KhoaHoc::where('slug', $khoahocslug)->firstOrFail();
@@ -141,7 +150,7 @@ class FrontendController extends Controller
     public function lamBai($khoahocslug, $dethislug)
     {
         $khoaHoc = KhoaHoc::where('slug', $khoahocslug)->firstOrFail();
-        $deThi = DeThi::where('khoa_hoc_id',$khoaHoc->id)->where('slug', $dethislug)->firstOrFail();
+        $deThi = DeThi::where('khoa_hoc_id', $khoaHoc->id)->where('slug', $dethislug)->firstOrFail();
         $dsCauHoi = $deThi->cau_hois;
         return view('frontend.khoa-hoc.lam-bai')
             ->with('khoaHoc', $khoaHoc)
@@ -149,15 +158,61 @@ class FrontendController extends Controller
             ->with('dsCauHoi', $dsCauHoi);
     }
 
-    public function nopBai($khoahocslug, $dethislug)
+    public function nopBai(Request $request, $khoahocslug, $dethislug)
     {
-        $khoaHoc = KhoaHoc::where('slug', $khoahocslug)->firstOrFail();
-        $deThi = DeThi::where('khoa_hoc_id',$khoaHoc->id)->where('slug', $dethislug)->firstOrFail();
+        // Lấy thông tin khóa học và đề thi từ slug
+        $khoaHoc = KhoaHoc::where('slug', $khoahocslug)->first();
+        $deThi = DeThi::where('slug', $dethislug)->first();
+
+        // Kiểm tra nếu không tìm thấy khóa học hoặc đề thi
+        if (!$khoaHoc || !$deThi) {
+            return redirect()->back()->with('error', 'Khóa học hoặc đề thi không tồn tại.');
+        }
+
+        // Lấy danh sách câu hỏi từ đề thi
         $dsCauHoi = $deThi->cau_hois;
-        return view('frontend.khoa-hoc.ket-qua')
-            ->with('khoaHoc', $khoaHoc)
-            ->with('deThi', $deThi)
-            ->with('dsCauHoi', $dsCauHoi);
+
+        // Kiểm tra nếu không có câu hỏi nào
+        if ($dsCauHoi->isEmpty()) {
+            return redirect()->back()->with('error', 'Đề thi không có câu hỏi nào.');
+        }
+
+        // Lấy dữ liệu câu trả lời từ request
+        $dapAnIds = $request->input('dap_an_id');
+
+        // Khởi tạo biến để tính điểm và danh sách kết quả
+        $diem = 0;
+        $ketQua = [];
+
+        // Duyệt qua từng câu hỏi và kiểm tra đáp án
+        foreach ($dsCauHoi as $cauHoi) {
+            // Lấy đáp án đúng của câu hỏi
+            $dapAnDung = null;
+            foreach ($cauHoi->phuong_ans as $phuongAn) {
+                if ($phuongAn->la_phuong_an_dung) {
+                    $dapAnDung = $phuongAn->id;
+                    break;
+                }
+            }
+
+            // Lấy đáp án người dùng đã chọn
+            $dapAnNguoiDung = isset($dapAnIds[$cauHoi->id]) ? $dapAnIds[$cauHoi->id] : null;
+
+            // So sánh đáp án đúng với đáp án người dùng chọn
+            if ($dapAnDung && $dapAnDung == $dapAnNguoiDung) {
+                $diem++;
+            }
+
+            // Lưu thông tin câu hỏi, đáp án đã chọn và đáp án đúng vào mảng kết quả
+            $ketQua[] = [
+                'cauHoi' => $cauHoi,
+                'dapAnDung' => $dapAnDung,
+                'dapAnNguoiDung' => $dapAnNguoiDung
+            ];
+        }
+
+        // Trả kết quả về view
+        return view('frontend.khoa-hoc.ket-qua', compact('khoaHoc', 'deThi', 'diem', 'ketQua'));
     }
     // ===========================================================================
 
@@ -172,10 +227,10 @@ class FrontendController extends Controller
         $data = $request->all();
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password'], 'status' => 1])) {
             Session::put('user', $data['email']);
-            request()->session()->flash('success', 'Successfully login');
+            request()->session()->flash('success', 'Đăng nhập thành công.');
             return redirect()->route('home');
         } else {
-            request()->session()->flash('error', 'Invalid email and password pleas try again!');
+            request()->session()->flash('error', 'Email hoặc mật khẩu không hợp lệ.');
             return redirect()->back();
         }
     }
@@ -184,7 +239,7 @@ class FrontendController extends Controller
     {
         Session::forget('user');
         Auth::logout();
-        request()->session()->flash('success', 'Logout successfully');
+        request()->session()->flash('success', 'Đăng xuất thành công.');
         return back();
     }
 
@@ -192,38 +247,40 @@ class FrontendController extends Controller
     {
         return view('frontend.pages.register');
     }
+
     public function registerSubmit(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
             'name' => 'string|required|min:2',
             'email' => 'string|required|unique:users,email',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:8|confirmed',
         ]);
+
         $data = $request->all();
-        // dd($data);
         $check = $this->create($data);
         Session::put('user', $data['email']);
+
         if ($check) {
-            request()->session()->flash('success', 'Successfully registered');
+            request()->session()->flash('success', 'Đăng ký thành công.');
             return redirect()->route('home');
         } else {
-            request()->session()->flash('error', 'Please try again!');
+            request()->session()->flash('error', 'Đã xảy ra lỗi! Vui lòng thử lại.');
             return back();
         }
     }
+
     public function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'status' => 'active'
+            'status' => 1
         ]);
     }
-    // Reset password
+
     public function showResetForm()
     {
-        return view('authh.passwords.reset');
+        return view('auth.passwords.reset');
     }
 }

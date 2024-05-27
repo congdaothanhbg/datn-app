@@ -4,8 +4,19 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Chi tiết bài viết</li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('home') }}">
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('bai-viet') }}">
+                        Bài viết hướng dẫn chăm sóc xe
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Chi tiết bài viết
+                </li>
             </ol>
         </nav>
         <section class="blog-single section">
@@ -16,14 +27,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="image">
-                                        @if ($baiViet === null)
-                                            <img src="" alt=""
-                                                style="max-width: 400px;">
-                                        @else
-                                            <img src="{{ $baiViet->hinh_anh }}" alt="{{ $baiViet->ten_bai_viet }}"
-                                                style="max-width: 400px;">
-                                        @endif
-
+                                        <img src="{{ $baiViet->hinh_anh }}" alt="{{ $baiViet->hinh_anh }}">
                                     </div>
                                     <div class="blog-detail">
                                         <h2 class="blog-title">
@@ -55,29 +59,32 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr class="table-group-divider">
                                 @auth
                                     <div class="col-12 mt-4">
                                         <div class="reply">
                                             <div class="reply-head comment-form" id="commentFormContainer">
                                                 <h2 class="reply-title">Bình luận</h2>
                                                 <form class="form comment_form" id="commentForm"
-                                                    action="{{ route('post-comment.store', $baiViet->slug) }}" method="POST">
+                                                    action="{{ route('binh-luan.store', $baiViet->slug) }}" method="POST">
                                                     @csrf
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="form-group  comment_form_body">
                                                                 <label for="noi_dung">Viết cảm nghĩ của
                                                                     bạn<span>*</span></label>
-                                                                <textarea id="noi_dung" name="noi_dung" rows="10" placeholder=""></textarea>
+                                                                <textarea id="noi_dung" name="noi_dung" rows="10"></textarea>
                                                                 <input type="hidden" name="bai_viet_id"
                                                                     value="{{ $baiViet->id }}" />
+                                                                <input type="hidden" name="slug"
+                                                                    value="{{ $baiViet->slug }}" />
                                                                 <input type="hidden" name="binh_luan_id" id="binh_luan_id"
                                                                     value="" />
                                                             </div>
                                                         </div>
                                                         <div class="col-12">
                                                             <div class="form-group button">
-                                                                <button type="submit" class="btn">
+                                                                <button type="submit" class="btn btn-primary">
                                                                     <span class="comment_btn comment">
                                                                         Đăng
                                                                     </span>
@@ -109,11 +116,11 @@
                                     <div class="comments">
                                         <h3 class="comment-title">Lượt bình luận ({{ $baiViet->allComments->count() }})
                                         </h3>
-                                        {{-- @include('frontend.pages.comment', [
+                                        @include('frontend.pages.comment', [
                                             'dsBinhLuan' => $baiViet->comments,
                                             'bai_viet_id' => $baiViet->id,
                                             'depth' => 3,
-                                        ]) --}}
+                                        ])
                                     </div>
                                 </div>
                             </div>
@@ -123,6 +130,7 @@
                 </div>
             </div>
         </section>
+        <hr class="table-group-divider">
     </div>
 @endsection
 @push('scripts')

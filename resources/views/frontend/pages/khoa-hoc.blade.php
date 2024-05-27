@@ -32,7 +32,7 @@
                                             <h2>{{ $khoaHoc->ten_khoa_hoc }}</h2>
                                             <p>{{ $khoaHoc->mo_ta }}</p>
                                             <a href="{{ route('khoa-hoc.detail', $khoaHoc->slug) }}"
-                                                class="btn btn-outline-secondary {{$khoaHoc->id == 2 ? 'disabled' : ''}}">
+                                                class="btn btn-primary text-white {{$khoaHoc->id == 2 ? 'disabled' : ''}}">
                                                 Chi tiết
                                             </a>
                                         </div>

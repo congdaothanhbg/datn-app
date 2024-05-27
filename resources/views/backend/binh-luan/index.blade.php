@@ -42,21 +42,21 @@
                                     <td>{{ $binhLuan->id }}</td>
                                     <td>{{ $binhLuan->user_info['name'] }}</td>
                                     <td>{{ $binhLuan->post->ten_bai_viet }}</td>
-                                    <td>{{ $binhLuan->comment }}</td>
+                                    <td>{{ $binhLuan->noi_dung }}</td>
                                     <td>{{ $binhLuan->created_at->format('M d D, Y g: i a') }}</td>
                                     <td>
-                                        @if ($binhLuan->status == 'active')
-                                            <span class="badge badge-success">{{ $binhLuan->status }}</span>
+                                        @if ($binhLuan->trang_thai == 1)
+                                            <span class="badge badge-success">Khả dụng</span>
                                         @else
-                                            <span class="badge badge-warning">{{ $binhLuan->status }}</span>
+                                            <span class="badge badge-warning">Không khả dụng</span>
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('comment.edit', $binhLuan->id) }}"
+                                        <a href="{{ route('binh-luan.edit', $binhLuan->id) }}"
                                             class="btn btn-primary btn-sm float-left mr-1"
                                             style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
                                             title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                                        <form method="POST" action="{{ route('comment.destroy', [$binhLuan->id]) }}">
+                                        <form method="POST" action="{{ route('binh-luan.destroy', [$binhLuan->id]) }}">
                                             @csrf
                                             @method('delete')
                                             <button class="btn btn-danger btn-sm dltBtn" data-id={{ $binhLuan->id }}

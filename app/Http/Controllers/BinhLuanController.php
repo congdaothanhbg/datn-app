@@ -15,13 +15,14 @@ class BinhLuanController extends Controller
     public function index()
     {
         $dsBinhLuan = BinhLuan::getAllComments();
+
         return view('backend.binh-luan.index')
             ->with('dsBinhLuan', $dsBinhLuan);
     }
 
     public function store(Request $request)
     {
-        $post_info = BaiViet::getPostBySlug($request->slug);
+        $baiViet = BaiViet::getPostBySlug($request->slug);
         $data = $request->all();
         $data['user_id'] = $request->user()->id;
         $data['trang_thai'] = 1;
@@ -29,7 +30,7 @@ class BinhLuanController extends Controller
         $user = User::where('role', 'admin')->get();
         $details = [
             'title' => "Có bình luận mới",
-            'actionURL' => route('bai-viet.detail', $post_info->slug),
+            'actionURL' => route('bai-viet.detail', $baiViet->slug),
             'fas' => 'fas fa-comment'
         ];
         Notification::send($user, new StatusNotification($details));
@@ -43,9 +44,9 @@ class BinhLuanController extends Controller
 
     public function edit($id)
     {
-        $comments = BinhLuan::find($id);
-        if ($comments) {
-            return view('backend.binh-luan.edit')->with('comment', $comments);
+        $binhLuan = BinhLuan::find($id);
+        if ($binhLuan) {
+            return view('backend.binh-luan.edit')->with('binhLuan', $binhLuan);
         } else {
             request()->session()->flash('error', 'Không tìm thấy bình luận.');
             return redirect()->back();
@@ -54,17 +55,16 @@ class BinhLuanController extends Controller
 
     public function update(Request $request, $id)
     {
-        $comment = BinhLuan::find($id);
-        if ($comment) {
+        $binhLuan = BinhLuan::find($id);
+        if ($binhLuan) {
             $data = $request->all();
-            // return $data;
-            $status = $comment->fill($data)->update();
+            $status = $binhLuan->fill($data)->update();
             if ($status) {
                 request()->session()->flash('success', 'Bình luận đã được chỉnh sửa thành công.');
             } else {
                 request()->session()->flash('error', 'Đã xảy ra lỗi! Vui lòng thử lại');
             }
-            return redirect()->route('comment.index');
+            return redirect()->route('binh-luan.index');
         } else {
             request()->session()->flash('error', 'Không tìm thấy bình luận.');
             return redirect()->back();
@@ -73,9 +73,9 @@ class BinhLuanController extends Controller
 
     public function destroy($id)
     {
-        $comment = BinhLuan::find($id);
-        if ($comment) {
-            $status = $comment->delete();
+        $binhLuan = BinhLuan::find($id);
+        if ($binhLuan) {
+            $status = $binhLuan->delete();
             if ($status) {
                 request()->session()->flash('success', 'Bình luận đã được xoá thành công.');
             } else {

@@ -9,7 +9,7 @@ class BinhLuan extends Model
     protected $table = 'binh_luan';
 
     protected $fillable = [
-        'bai_viet_id', 'user_id', 'noi_dung', 'binh_luan_id', 'noi_dung_phan_hoi', 'trang_thai'
+        'bai_viet_id', 'user_id', 'binh_luan_id',  'noi_dung', 'noi_dung_phan_hoi', 'trang_thai'
     ];
 
     public function user_info()
@@ -29,7 +29,12 @@ class BinhLuan extends Model
 
     public function post()
     {
-        return $this->belongsTo(BaiViet::class, 'bai_viet_id', 'id');
+        return $this->belongsTo(BaiViet::class, 'bai_viet_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(BinhLuan::class, 'binh_luan_id', 'id');
     }
 
     public function replies()

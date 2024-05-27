@@ -42,19 +42,19 @@
             Không tìm thấy câu hỏi nào.
         @else
             @foreach ($dsCauHoi as $cauHoi)
-                <div class="question">
+                <div class="question mb-3">
                     <h5>Câu hỏi số: {{ $cauHoi->thu_tu }}</h5>
-                    <p style="font-size: large;">{{ $cauHoi->noi_dung }}</p>
-
+                    <b style="font-size: large;">{{ $cauHoi->noi_dung }}</b><br>
+                    @if ($cauHoi->hinh_anh !== null)
+                        <img src="{{ $cauHoi->hinh_anh }}" alt="{{ $cauHoi->noi_dung }}" class="img-fluid">
+                    @endif
                     @if ($cauHoi->phuong_ans)
                         <ol class="ml-5">
                             @foreach ($cauHoi->phuong_ans as $phuongAn)
                                 <li>{{ $phuongAn->noi_dung }}</li>
-                                <img src="{{ $phuongAn->hinh_anh }}" alt="">
                             @endforeach
                         </ol>
                     @endif
-
                     <button class="btn btn-warning xemDapAnBtn">Xem đáp án =></button>
                     @foreach ($cauHoi->phuong_ans as $phuongAn)
                         @if ($phuongAn->la_phuong_an_dung)
@@ -66,6 +66,7 @@
         @endif
         <hr>
     </div>
+@endsection
 @push('scripts')
     <script>
         $(document).ready(function() {

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\BinhLuan;
 use Illuminate\Http\Request;
-use App\User;
 use App\Models\ProductReview;
+use App\Models\User;
 use App\Rules\MatchOldPassword;
 use Hash;
 
@@ -35,9 +35,9 @@ class HomeController extends Controller
         $data = $request->all();
         $status = $user->fill($data)->save();
         if ($status) {
-            request()->session()->flash('success', 'Successfully updated your profile');
+            request()->session()->flash('success', 'Cập nhật hồ sơ thành công.');
         } else {
-            request()->session()->flash('error', 'Please try again!');
+            request()->session()->flash('error', 'Vui lòng thử lại!');
         }
         return redirect()->back();
     }
@@ -55,13 +55,13 @@ class HomeController extends Controller
         if ($comment) {
             $status = $comment->delete();
             if ($status) {
-                request()->session()->flash('success', 'Post Comment successfully deleted');
+                request()->session()->flash('success', 'Xoá bình luận thành công.');
             } else {
-                request()->session()->flash('error', 'Error occurred please try again');
+                request()->session()->flash('error', 'Vui lòng thử lại.');
             }
             return back();
         } else {
-            request()->session()->flash('error', 'Post Comment not found');
+            request()->session()->flash('error', 'Không tìm thấy bình luận.');
             return redirect()->back();
         }
     }
@@ -72,7 +72,7 @@ class HomeController extends Controller
         if ($comments) {
             return view('user.comment.edit')->with('comment', $comments);
         } else {
-            request()->session()->flash('error', 'Comment not found');
+            request()->session()->flash('error', 'Không tìm thấy bình luận.');
             return redirect()->back();
         }
     }
@@ -85,13 +85,13 @@ class HomeController extends Controller
             // return $data;
             $status = $comment->fill($data)->update();
             if ($status) {
-                request()->session()->flash('success', 'Comment successfully updated');
+                request()->session()->flash('success', 'Cập nhật bình luận thành công.');
             } else {
-                request()->session()->flash('error', 'Something went wrong! Please try again!!');
+                request()->session()->flash('error', 'Vui lòng thử lại.');
             }
             return redirect()->route('user.post-comment.index');
         } else {
-            request()->session()->flash('error', 'Comment not found');
+            request()->session()->flash('error', 'Không tìm thấy bình luận.');
             return redirect()->back();
         }
     }
@@ -111,6 +111,6 @@ class HomeController extends Controller
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
 
-        return redirect()->route('user')->with('success', 'Password successfully changed');
+        return redirect()->route('user')->with('success', 'Đổi mật khẩu thành công.');
     }
 }

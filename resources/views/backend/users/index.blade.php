@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-
+@section('title', 'Quản lý người dùng')
 @section('main-content')
     <div class="card shadow mb-4">
         <div class="row">
@@ -8,9 +8,10 @@
             </div>
         </div>
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary float-left">Users List</h6>
-            <a href="{{ route('nguoi-dung.create') }}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip"
-                data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add User</a>
+            <h6 class="m-0 font-weight-bold text-primary float-left">Danh sách người dùng</h6>
+            <a href="{{ route('nguoi-dung.create') }}" class="btn btn-primary btn-sm float-right">
+                <i class="fas fa-plus"></i> Thêm mới
+            </a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -21,10 +22,10 @@
                             <th>Họ tên</th>
                             <th>Email</th>
                             <th>Hình ảnh</th>
-                            <th>Join Date</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Ngày tham gia</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Quản lý</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -33,10 +34,10 @@
                             <th>Họ tên</th>
                             <th>Email</th>
                             <th>Hình ảnh</th>
-                            <th>Join Date</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Ngày tham gia</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Quản lý</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -67,13 +68,17 @@
                                     <a href="{{ route('nguoi-dung.edit', $user->id) }}"
                                         class="btn btn-primary btn-sm float-left mr-1"
                                         style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                        title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                                        title="edit" data-placement="bottom">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
                                     <form method="POST" action="{{ route('nguoi-dung.destroy', [$user->id]) }}">
                                         @csrf
                                         @method('delete')
                                         <button class="btn btn-danger btn-sm dltBtn" data-id={{ $user->id }}
                                             style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip"
-                                            data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                            data-placement="bottom" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -84,17 +89,10 @@
         </div>
     </div>
 @endsection
-
 @push('styles')
     <link href="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
-    {{-- <style>
-        div.dataTables_wrapper div.dataTables_paginate {
-            display: none;
-        }
-    </style> --}}
 @endpush
-
 @push('scripts')
     @include('backend.layouts.index-push-scripts')
 @endpush

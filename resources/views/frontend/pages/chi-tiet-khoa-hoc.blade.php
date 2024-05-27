@@ -34,8 +34,6 @@
             </li>
         </ul>
         <hr>
-
-        <hr>
     </div>
 @endsection
 

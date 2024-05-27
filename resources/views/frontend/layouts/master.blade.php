@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="vn">
 
 <head>
     @include('frontend.layouts.head')

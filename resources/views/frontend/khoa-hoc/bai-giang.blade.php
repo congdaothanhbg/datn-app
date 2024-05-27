@@ -41,8 +41,9 @@
             Không tìm thấy bài giảng nào.
         @else
             @foreach ($dsBaiGiang as $baiGiang)
-                <h5>Bài giảng số: {{ $baiGiang->thu_tu }}</h5>
-                <p style="font-size: large;">{{ $baiGiang->noi_dung }}</p>
+                <h5>
+                <a href="{{ route('bai-giang.detail', [$khoaHoc->slug, $baiGiang->slug]) }}">Bài giảng số: {{ $baiGiang->thu_tu }}</a>
+                </h5>
             @endforeach
         @endif
         <hr>

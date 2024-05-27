@@ -1,12 +1,12 @@
 @extends('frontend.layouts.master')
 @section('title', 'Trang chủ')
 @section('main-content')
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Trang chủ</li>
-        </ol>
-    </nav>
     <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Trang chủ</li>
+            </ol>
+        </nav>
         <section class="shop-blog section">
             <div class="row">
                 <div class="col-12">
@@ -34,7 +34,8 @@
                                     <div class="bg-image hover-overlay">
                                         <img src="{{ $baiViet->hinh_anh }}" alt="{{ $baiViet->ten_bai_viet }}">
                                         <a href="{{ route('bai-viet.detail', $baiViet->slug) }}">
-                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);">
+                                            </div>
                                         </a>
                                     </div>
                                     {{-- <div class="content"> --}}
@@ -104,4 +105,5 @@
             </div>
         </div>
     </div>
+
 @endsection

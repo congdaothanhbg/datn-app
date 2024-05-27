@@ -2,12 +2,19 @@
 @section('title', 'Bài viết hướng dẫn chăm sóc xe')
 @section('main-content')
     <div class="container">
-        <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb" class="py-1">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Bài viết hướng dẫn chăm sóc xe</li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('home') }}" class="text-primary">
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Bài viết hướng dẫn chăm sóc xe
+                </li>
             </ol>
         </nav>
+        <hr class="table-group-divider">
         <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
             <div class="col-md-12 px-0">
                 <h1 class="display-4 font-italic">Nơi chia sẻ những cách chăm sóc xe hiệu quả</h1>
@@ -17,6 +24,7 @@
                 </p>
             </div>
         </div>
+        <hr class="table-group-divider">
         <section class="blog-single shop-blog grid section">
             <div class="container">
                 <div class="row">
@@ -36,9 +44,12 @@
                                                 </span>
                                             </p>
                                             <a href="{{ route('bai-viet.detail', $post->slug) }}"
-                                                class="title">{{ $post->tieu_de }}</a>
+                                                class="title">
+                                                {{ $post->tieu_de }}
+                                            </a>
                                             <p>{!! html_entity_decode($post->summary) !!}</p>
-                                            <a href="{{ route('bai-viet.detail', $post->slug) }}" class="btn btn-primary text-white">
+                                            <a href="{{ route('bai-viet.detail', $post->slug) }}"
+                                                class="btn btn-primary text-white">
                                                 Chi tiết
                                             </a>
                                         </div>
@@ -54,6 +65,7 @@
                 </div>
             </div>
         </section>
+        <hr class="table-group-divider">
     </div>
 @endsection
 @push('styles')
