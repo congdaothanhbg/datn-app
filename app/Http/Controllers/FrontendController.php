@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BaiGiang;
 use App\Models\BaiViet;
+use App\Models\CauHoi;
 use App\Models\DanhMuc;
 use App\Models\DeThi;
 use App\Models\KhoaHoc;
@@ -53,6 +54,9 @@ class FrontendController extends Controller
     public function chiTietBaiViet($slug)
     {
         $baiViet = BaiViet::getPostBySlug($slug);
+        if (!$baiViet) {
+            abort(404);
+        }
         $dsBaiVietGanDay = BaiViet::where('trang_thai', 1)->orderBy('id', 'DESC')->limit(3)->get();
         return view('frontend.pages.chi-tiet-bai-viet')
             ->with('baiViet', $baiViet)
@@ -61,14 +65,28 @@ class FrontendController extends Controller
 
     public function timKiemBaiViet(Request $request)
     {
-        $dsBaiVietGanDay = BaiViet::where('trang_thai', 1)->orderBy('id', 'DESC')->limit(3)->get();
-        $baiViets = BaiViet::orwhere('title', 'like', '%' . $request->search . '%')
-            ->orwhere('noi_dung', 'like', '%' . $request->search . '%')
-            ->orwhere('slug', 'like', '%' . $request->search . '%')
+        $searchQuery = $request->query('search');
+        dd($searchQuery);
+        $dsBaiVietGanDay = BaiViet::where('trang_thai', 1)
             ->orderBy('id', 'DESC')
-            ->paginate(8);
+            ->limit(3)
+            ->get();
+        $dsBaiVietQuery = BaiViet::query();
+        if (!empty($searchQuery)) {
+            $dsBaiVietQuery->where(function ($query) use ($searchQuery) {
+                $query->orWhere('ten_bai_viet', 'like', '%' . $searchQuery . '%')
+                    ->orWhere('noi_dung', 'like', '%' . $searchQuery . '%')
+                    ->orWhere('slug', 'like', '%' . $searchQuery . '%');
+            });
+        }
+        $dsBaiViet = $dsBaiVietQuery->orderBy('id', 'DESC')->paginate(8);
+        // $dsBaiViet = BaiViet::orwhere('title', 'like', '%' . $request->search . '%')
+        //     ->orwhere('noi_dung', 'like', '%' . $request->search . '%')
+        //     ->orwhere('slug', 'like', '%' . $request->search . '%')
+        //     ->orderBy('id', 'DESC')
+        //     ->paginate(8);
         return view('frontend.pages.bai-viet')
-            ->with('dsBaiViet', $baiViets)
+            ->with('dsBaiViet', $dsBaiViet)
             ->with('dsBaiVietGanDay', $dsBaiVietGanDay);
     }
 
@@ -99,7 +117,10 @@ class FrontendController extends Controller
     // Khoá học
     public function khoaHoc()
     {
-        $dsKhoaHoc = KhoaHoc::get();
+        $dsKhoaHoc = KhoaHoc::all();
+        if (!$dsKhoaHoc) {
+            abort(404);
+        }
         return view('frontend.pages.khoa-hoc')
             ->with('dsKhoaHoc', $dsKhoaHoc);
     }
@@ -107,6 +128,9 @@ class FrontendController extends Controller
     public function chiTietKhoaHoc($slug)
     {
         $khoaHoc = KhoaHoc::where('slug', $slug)->first();
+        if (!$khoaHoc) {
+            abort(404);
+        }
         return view('frontend.pages.chi-tiet-khoa-hoc')
             ->with('khoaHoc', $khoaHoc);
     }
@@ -156,6 +180,12 @@ class FrontendController extends Controller
             ->with('khoaHoc', $khoaHoc)
             ->with('deThi', $deThi)
             ->with('dsCauHoi', $dsCauHoi);
+    }
+
+    public function getCauHoi($id)
+    {
+        $cauHoi = CauHoi::with('phuong_ans')->find($id);
+        return response()->json($cauHoi);
     }
 
     public function nopBai(Request $request, $khoahocslug, $dethislug)

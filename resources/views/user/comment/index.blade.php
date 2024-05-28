@@ -1,7 +1,6 @@
 @extends('user.layouts.master')
 @section('title', 'Bình luận')
 @section('main-content')
-    <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="row">
             <div class="col-md-12">
@@ -46,17 +45,18 @@
                                         @if ($binhLuan->post === null)
                                             <span class="text-danger">Bài viết không tồn tại.</span>
                                         @else
-                                            <a href="{{ route('bai-viet.detail', $binhLuan->post->id) }}">{{ $binhLuan->post->tieu_de }}</a>
+                                            <a
+                                                href="{{ route('bai-viet.detail', $binhLuan->post->slug) }}">{{ $binhLuan->post->ten_bai_viet }}</a>
                                         @endif
 
                                     </td>
                                     <td>{{ $binhLuan->noi_dung }}</td>
                                     <td>{{ $binhLuan->created_at->format('M d D, Y g: i a') }}</td>
                                     <td>
-                                        @if ($binhLuan->trang_thai === 'Khả dụng')
-                                            <span class="badge badge-success">{{ $binhLuan->trang_thai }}</span>
+                                        @if ($binhLuan->trang_thai === 1)
+                                            <span class="badge badge-success">Khả dụng</span>
                                         @else
-                                            <span class="badge badge-warning">{{ $binhLuan->trang_thai }}</span>
+                                            <span class="badge badge-warning">Không khả dụng</span>
                                         @endif
                                     </td>
                                     <td>
@@ -85,15 +85,8 @@
         </div>
     </div>
 @endsection
-
 @push('styles')
-    <link href="{{ asset('backend/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
-    <style>
-        div.dataTables_wrapper div.dataTables_paginate {
-            display: none;
-        }
-    </style>
+    @include('user.layouts.index-push-styles')
 @endpush
 @push('scripts')
     @include('user.layouts.index-push-scripts')

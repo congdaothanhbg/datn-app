@@ -58,10 +58,10 @@
                                 <td>{{ $user->created_at ? $user->created_at->diffForHumans() : '' }}</td>
                                 <td>{{ $user->role }}</td>
                                 <td>
-                                    @if ($user->status == 'active')
-                                        <span class="badge badge-success">{{ $user->status }}</span>
+                                    @if ($user->status == 1)
+                                        <span class="badge badge-success">Khả dụng</span>
                                     @else
-                                        <span class="badge badge-warning">{{ $user->status }}</span>
+                                        <span class="badge badge-warning">Không khả dụng</span>
                                     @endif
                                 </td>
                                 <td>

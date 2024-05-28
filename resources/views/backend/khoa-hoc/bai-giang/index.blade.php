@@ -39,7 +39,7 @@
                                 <th>ID</th>
                                 <th>Thứ tự</th>
                                 <th>Tên bài giảng</th>
-                                <th>Nội dung</th>
+                                <th class="col-4">Nội dung</th>
                                 <th class="col-2">Hình ảnh</th>
                                 <th class="col-2">Video</th>
                                 <th>Trạng thái</th>
@@ -51,7 +51,7 @@
                                 <th>ID</th>
                                 <th>Thứ tự</th>
                                 <th>Tên bài giảng</th>
-                                <th>Nội dung</th>
+                                <th class="col-4">Nội dung</th>
                                 <th class="col-2">Hình ảnh</th>
                                 <th class="col-2">Video</th>
                                 <th>Trạng thái</th>
@@ -64,9 +64,17 @@
                                     <th>{{ $baiGiang->id }}</th>
                                     <td>{{ $baiGiang->thu_tu }}</td>
                                     <td>{{ $baiGiang->ten_bai_giang }}</td>
-                                    <td>{!! $baiGiang->noi_dung !!}</td>
-                                    <td class="col-2">{{ $baiGiang->hinh_anh }}</td>
-                                    <td class="col-2">{{ $baiGiang->video }}</td>
+                                    <td class="col-4">{!! $baiGiang->noi_dung !!}</td>
+                                    <td class="col-2">
+                                        @if ($baiGiang->hinh_anh !== null)
+                                            <img src="{{ $baiGiang->hinh_anh }}" alt="" width="200px">
+                                        @endif
+                                    </td>
+                                    <td class="col-2">
+                                        @if ($baiGiang->video !== null)
+                                            <video src="{{ $baiGiang->video }}" controls width="200px"></video>
+                                        @endif
+                                    </td>
                                     <td>{{ $baiGiang->trang_thai }}</td>
                                     <td>
                                         <a href="{{ route('khoa-hoc.bai-giang.edit', [$khoaHoc, $baiGiang]) }}"

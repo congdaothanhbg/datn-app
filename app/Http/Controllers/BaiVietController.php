@@ -66,7 +66,10 @@ class BaiVietController extends Controller
 
     public function update(Request $request, $id)
     {
-        $post = BaiViet::findOrFail($id);
+        $baiViet = BaiViet::findOrFail($id);
+        if (!$baiViet) {
+            abort(404);
+        }
         $this->validate($request, [
             'ten_bai_viet' => 'required|string',
             'noi_dung' => 'required|string',
@@ -83,7 +86,7 @@ class BaiVietController extends Controller
             $slug = $slug . '-' . date('ymdis') . '-' . rand(0, 999);
         }
         $data['slug'] = $slug;
-        $ketQua = $post->fill($data)->save();
+        $ketQua = $baiViet->fill($data)->save();
         if ($ketQua) {
             request()->session()->flash('success', 'Bài viết đã được cập nhật thành công.');
         } else {
@@ -94,9 +97,11 @@ class BaiVietController extends Controller
 
     public function destroy($id)
     {
-        $post = BaiViet::findOrFail($id);
-
-        $ketQua = $post->delete();
+        $baiViet = BaiViet::findOrFail($id);
+        if (!$baiViet) {
+            abort(404);
+        }
+        $ketQua = $baiViet->delete();
 
         if ($ketQua) {
             request()->session()->flash('success', 'Bài viết đã được xoá bỏ thành công.');

@@ -61,7 +61,7 @@
                         <img src="{{ $baiGiang->hinh_anh }}" alt="" class="img-fluid">
                     @endif
                     @if ($baiGiang->video)
-                        <video src="{{ $baiGiang->video }}" style="max-width: 500px;"></video>
+                        <video src="{{ $baiGiang->video }}" controls style="max-width: 500px;"></video>
                     @endif
                 </div>
             </div>

@@ -11,7 +11,7 @@ class BaiGiangController extends Controller
 {
     public function index(KhoaHoc $khoaHoc)
     {
-        $dsBaiGiang = $khoaHoc->bai_giangs;
+        $dsBaiGiang = $khoaHoc->bai_giangs()->orderBy('thu_tu', 'desc')->get();
         return view('backend.khoa-hoc.bai-giang.index')
             ->with('khoaHoc', $khoaHoc)
             ->with('dsBaiGiang', $dsBaiGiang);

@@ -40,7 +40,6 @@ Route::get('cache-clear', function () {
     return redirect()->back();
 })->name('cache.clear');
 
-
 // Liên kết kho lưu trữ
 Route::get('storage-link', [AdminController::class, 'storageLink'])->name('storage.link');
 
@@ -63,11 +62,16 @@ Route::get('password-reset', [FrontendController::class, 'showResetForm'])->name
 Route::get('', [FrontendController::class, 'trangChu'])->name('home');
 Route::get('trang-chu', [FrontendController::class, 'trangChu']);
 
-Route::get('/bai-viet', [FrontendController::class, 'baiViet'])->name('bai-viet');
-Route::get('/bai-viet/{slug}', [FrontendController::class, 'chiTietBaiViet'])->name('bai-viet.detail');
-Route::get('/bai-viet/tim-kiem', [FrontendController::class, 'timKiemBaiViet'])->name('bai-viet.search');
-Route::post('/bai-viet/bo-loc', [FrontendController::class, 'boLocBaiViet'])->name('bai-viet.filter');
-Route::get('danh-muc-bai-viet/{slug}', [FrontendController::class, 'baiVietTheoDanhMuc'])->name('bai-viet.category');
+Route::get('/bai-viet', [FrontendController::class, 'baiViet'])
+    ->name('bai-viet');
+Route::get('/bai-viet/{slug}', [FrontendController::class, 'chiTietBaiViet'])
+    ->name('bai-viet.detail');
+Route::post('/bai-viet/tim-kiem', [FrontendController::class, 'timKiemBaiViet'])
+    ->name('bai-viet.search');
+Route::post('/bai-viet/bo-loc', [FrontendController::class, 'boLocBaiViet'])
+    ->name('bai-viet.filter');
+Route::get('danh-muc-bai-viet/{slug}', [FrontendController::class, 'baiVietTheoDanhMuc'])
+    ->name('bai-viet.category');
 
 Route::get('khoa-hoc', [FrontendController::class, 'khoaHoc'])
     ->name('khoa-hoc');
@@ -87,6 +91,7 @@ Route::post('khoa-hoc/{khoahocslug}/de-thi/{dethislug}', [FrontendController::cl
     ->name('nop-bai');
 Route::get('khoa-hoc/{khoahocslug}/de-thi/{dethislug}/ket-qua', [FrontendController::class, 'ketQua'])
     ->name('ket-qua');
+Route::get('/cau-hoi/{id}', [FrontendController::class, 'getCauHoi']);
 
 Route::post('bai-viet/{slug}/binh-luan', [BinhLuanController::class, 'store'])->name('binh-luan.store');
 Route::resource('/binh-luan', BinhLuanController::class);
@@ -120,6 +125,7 @@ Route::group(['prefix' => 'quan-tri-vien', 'middleware' => ['auth', 'admin']], f
     });
 
     Route::resource('nguoi-dung', UserController::class);
+
     Route::get('/ho-so', [AdminController::class, 'profile'])
         ->name('admin-profile');
     Route::post('/ho-so/{id}', [AdminController::class, 'profileUpdate'])
@@ -143,16 +149,24 @@ Route::group(['prefix' => 'nguoi-dung', 'middleware' => ['user']], function () {
     Route::get('/', [HomeController::class, 'index'])
         ->name('user');
 
-    Route::get('/ho-so', [HomeController::class, 'profile'])->name('user-profile');
-    Route::post('/ho-so/{id}', [HomeController::class, 'profileUpdate'])->name('user-profile-update');
+    Route::get('/ho-so', [HomeController::class, 'profile'])
+        ->name('user-profile');
+    Route::post('/ho-so/{id}', [HomeController::class, 'profileUpdate'])
+        ->name('user-profile-update');
 
-    Route::get('user-post/binh-luan', [HomeController::class, 'userComment'])->name('user.binh-luan.index');
-    Route::delete('user-post/binh-luan/delete/{id}', [HomeController::class, 'userCommentDelete'])->name('user.binh-luan.delete');
-    Route::get('user-post/binh-luan/edit/{id}', [HomeController::class, 'userCommentEdit'])->name('user.binh-luan.edit');
-    Route::patch('user-post/binh-luan/udpate/{id}', [HomeController::class, 'userCommentUpdate'])->name('user.binh-luan.update');
+    Route::get('binh-luan', [HomeController::class, 'userComment'])
+        ->name('user.binh-luan.index');
+    Route::delete('binh-luan/delete/{id}', [HomeController::class, 'userCommentDelete'])
+        ->name('user.binh-luan.delete');
+    Route::get('binh-luan/edit/{id}', [HomeController::class, 'userCommentEdit'])
+        ->name('user.binh-luan.edit');
+    Route::patch('binh-luan/udpate/{id}', [HomeController::class, 'userCommentUpdate'])
+        ->name('user.binh-luan.update');
 
-    Route::get('doi-mat-khau', [HomeController::class, 'changePassword'])->name('user.change.password.form');
-    Route::post('doi-mat-khau', [HomeController::class, 'changPasswordStore'])->name('change.password');
+    Route::get('doi-mat-khau', [HomeController::class, 'changePassword'])
+        ->name('user.change.password.form');
+    Route::post('doi-mat-khau', [HomeController::class, 'changPasswordStore'])
+        ->name('change.password');
 });
 /*--------------------------------------------------------------------------*/
 

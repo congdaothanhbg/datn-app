@@ -39,6 +39,6 @@ class BinhLuan extends Model
 
     public function replies()
     {
-        return $this->hasMany(BinhLuan::class, 'binh_luan_id')->where('trang_thai', 1);
+        return $this->hasMany(BinhLuan::class, 'binh_luan_id');
     }
 }

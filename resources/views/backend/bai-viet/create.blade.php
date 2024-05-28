@@ -48,7 +48,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="danh_muc_id">Danh mục bài viết <span class="text-danger">*</span></label>
-                    <select name="danh_muc_id" class="form-control">
+                    <select name="danh_muc_id" class="form-control" required>
                         <option value="">--Chọn danh mục bài viết--</option>
                         @foreach ($dsDanhMuc as $danhMuc)
                             <option value='{{ $danhMuc->id }}'>{{ $danhMuc->ten_danh_muc }}</option>
@@ -60,16 +60,20 @@
                     <select name="user_id" class="form-control">
                         <option value="">--Chọn tác giả--</option>
                         @foreach ($users as $key => $data)
-                            <option value='{{ $data->id }}' {{ $key == 0 ? 'selected' : '' }}>{{ $data->name }}
+                            <option value='{{ $data->id }}' {{ $key == 0 ? 'selected' : '' }}>
+                                {{ $data->name }}
                             </option>
                         @endforeach
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Hình ảnh <span class="text-danger">*</span></label>
+                    <label for="thumbnail" class="form-label">
+                        Hình ảnh <span class="text-danger">*</span>
+                    </label>
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary text-white">
+                            <a id="lfm" data-input="thumbnail" data-preview="holder"
+                                class="btn btn-primary text-white">
                                 <i class="fa fa-picture-o"></i> Chọn
                             </a>
                         </span>

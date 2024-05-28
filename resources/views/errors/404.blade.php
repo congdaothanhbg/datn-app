@@ -12,8 +12,8 @@
                 <div class="text-center">
                     <div class="error mx-auto" data-text="404">404</div>
                     <p class="lead text-gray-800 mb-5">Không tìm thấy trang.</p>
-                    <p class="text-gray-500 mb-0">Có vẻ như bạn đang tìm kiêm một tài nguyên không tồn tại.</p>
-                    <a href="{{ route('home') }}">&larr; Quay lại trang chủ</a>
+                    <p class="text-gray-500 mb-0">Có vẻ như bạn đang tìm kiếm một tài nguyên không tồn tại.</p>
+                    <a href="javascript:history.back()">&larr; Quay lại</a>
                 </div>
             </div>
         </div>

@@ -63,12 +63,6 @@
             </div>
         </div>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">
-            <i class="fas fa-star"></i>
-            <span>Quản lý đánh giá</span>
-        </a>
-    </li>
     <hr class="sidebar-divider d-none d-md-block">
     <div class="sidebar-heading">Người dùng</div>
     <li class="nav-item">

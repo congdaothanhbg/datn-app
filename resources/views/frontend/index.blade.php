@@ -41,12 +41,26 @@
                                     {{-- <div class="content"> --}}
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $baiViet->ten_bai_viet }}</h5>
-                                        <p class="date">{{ $baiViet->created_at->format('d/m/Y') }}</p>
-                                        <br>
+                                        <p class="date">
+                                            <i class="fa-solid fa-calendar-days"></i>
+                                            {{ $baiViet->created_at->format('d/m/Y') }}
+                                        </p>
+                                        @if ($baiViet->author_info !== null)
+                                            <p>
+                                                <i class="fa-solid fa-user-pen"></i>
+                                                {{ $baiViet->author_info->name }}
+                                            </p>
+                                        @else
+                                            <p>
+                                                <i class="fa-solid fa-user-pen"></i>
+                                                Không xác định
+                                            </p>
+                                        @endif
                                         @if ($baiViet->cat_info === null)
                                         @else
-                                            <strong class="d-inline-block text-warning">
-                                                {{ $baiViet->cat_info->tieu_de }}
+                                            <strong class="d-inline-block text-warning mb-2">
+                                                <i class="fa-solid fa-list"></i>
+                                                {{ $baiViet->cat_info->ten_danh_muc }}
                                             </strong>
                                         @endif
                                         <br>

@@ -27,12 +27,13 @@
     <h2>Khoá học: <b>{{ $khoaHoc->ten_khoa_hoc }}</b></h2>
     @php
         $disabled = '';
+        $limited = false;
         if (
             ($khoaHoc->id === 1 && $khoaHoc->cau_hois->count() >= 200) ||
             ($khoaHoc->id === 2 && $khoaHoc->cau_hois->count() >= 450)
         ) {
             $disabled = 'disabled';
-            $limited = 1;
+            $limited = true;
         }
     @endphp
     <a href="{{ route('khoa-hoc.cau-hoi.create', $khoaHoc) }}" class="btn btn-primary {{ $disabled }}">Thêm mới</a>

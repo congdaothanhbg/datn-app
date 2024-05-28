@@ -27,7 +27,11 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="image">
-                                        <img src="{{ $baiViet->hinh_anh }}" alt="{{ $baiViet->hinh_anh }}">
+                                        @if ($baiViet->hinh_anh !== null)
+                                            <img src="{{ $baiViet->hinh_anh }}" alt="{{ $baiViet->hinh_anh }}">
+                                        @else
+                                            <img src="" alt="Hình ảnh">
+                                        @endif
                                     </div>
                                     <div class="blog-detail">
                                         <h2 class="blog-title">
@@ -116,7 +120,7 @@
                                     <div class="comments">
                                         <h3 class="comment-title">Lượt bình luận ({{ $baiViet->allComments->count() }})
                                         </h3>
-                                        @include('frontend.pages.comment', [
+                                        @include('frontend.pages.binh-luan', [
                                             'dsBinhLuan' => $baiViet->comments,
                                             'bai_viet_id' => $baiViet->id,
                                             'depth' => 3,

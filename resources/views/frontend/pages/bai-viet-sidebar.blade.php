@@ -1,11 +1,11 @@
 <div class="col-lg-4 col-12">
     <div class="main-sidebar">
-        {{-- <div class="single-widget search">
+        <div class="single-widget search">
             <form method="GET" action="{{ route('bai-viet.search') }}" class="form">
-                <input type="text" placeholder="Tìm kiếm bài viết ..." name="search">
-                <button class="button" type="sumbit"><i class="fa fa-search"></i></button>
+                <input type="text" name="search" placeholder="Tìm kiếm bài viết theo tên ..." value="{{ request()->query('search') }}">
+                <button type="sumbit" class="button"><i class="fa fa-search"></i></button>
             </form>
-        </div> --}}
+        </div>
         <div class="single-widget category">
             <h3 class="title">Danh mục bài viết</h3>
             <ul class="categor-list">

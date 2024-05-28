@@ -37,14 +37,13 @@ class BaiViet extends Model
     {
         return $this->hasMany(BinhLuan::class, 'bai_viet_id')
             ->whereNull('binh_luan_id')
-            ->where('trang_thai', 1)
             ->with('user_info')
             ->orderBy('id', 'DESC');
     }
 
     public function allComments()
     {
-        return $this->hasMany(BinhLuan::class, 'bai_viet_id')->where('trang_thai', 1);
+        return $this->hasMany(BinhLuan::class, 'bai_viet_id');
     }
 
     public static function countActivePost()

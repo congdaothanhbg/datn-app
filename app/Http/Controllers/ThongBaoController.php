@@ -9,7 +9,7 @@ class ThongBaoController extends Controller
 {
     public function index()
     {
-        return view('backend.notification.index');
+        return view('backend.thong-bao.index');
     }
 
     public function show(Request $request)

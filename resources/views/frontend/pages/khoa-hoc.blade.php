@@ -30,7 +30,7 @@
                                     <div class="col-md-6">
                                         <div class="h-100 p-5 bg-light border rounded-3">
                                             <h2>{{ $khoaHoc->ten_khoa_hoc }}</h2>
-                                            <p>{{ $khoaHoc->mo_ta }}</p>
+                                            <p>{!! $khoaHoc->mo_ta !!}</p>
                                             <a href="{{ route('khoa-hoc.detail', $khoaHoc->slug) }}"
                                                 class="btn btn-primary text-white {{$khoaHoc->id == 2 ? 'disabled' : ''}}">
                                                 Chi tiết
@@ -44,6 +44,6 @@
                 </div>
             </div>
         </section>
-        <hr>
+        <hr class="table-group-divider">
     </div>
 @endsection

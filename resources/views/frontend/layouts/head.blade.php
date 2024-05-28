@@ -43,6 +43,7 @@
 
 @stack('styles')
 
+<script src="{{ asset('frontend/js/jquery-3.7.1.min.js') }}"></script>
+
 <!-- Scripts -->
 {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
-<script src="https://cdn.jsdelivr.net/npm/easytimer.js@4.3.1/dist/easytimer.min.js"></script>

@@ -21,15 +21,37 @@
         </nav>
         <h2>Khoá học: <b class="text-danger">{{ $khoaHoc->ten_khoa_hoc }}</b></h2>
         <p>Mô tả: <b>{{ $khoaHoc->mo_ta }}</b></p>
-        <hr>
-        <div class="px-5 py-3">
-            <div class="text-center">
-                <h3>{{ $deThi->ten_de_thi }}</h3>
+        <hr class="table-group-divider">
+
+        <div class="text-center">
+            <h3>{{ $deThi->ten_de_thi }}</h3>
+        </div>
+        <div style="text-align: right;">
+            <h1>Thời gian còn lại: <span id="time">19:00</span></h1>
+        </div>
+        <div class="card mb-3">
+            <div class="card-body">
+                @foreach ($dsCauHoi as $index => $cauHoi)
+                    <label class="btn btn-success btn-cauhoi clickcauhoi active" id="show{{ $index + 1 }}"
+                        data-id="data{{ $index + 1 }}">
+                        <input type="radio" id="{{ $index + 1 }}" name="cau_hoi_id" data-id="{{ $cauHoi->id }}">
+                        {{ $index + 1 }}
+                    </label>
+                @endforeach
             </div>
-            <div style="text-align: right;">
-                <h1>Thời gian còn lại: <span id="time">19:00</span></h1>
+        </div>
+        <div id="cau-hoi-hien-tai">
+            <!-- Nội dung câu hỏi sẽ được tải vào đây -->
+        </div>
+        <form id="quiz-form" method="POST" action="{{ route('nop-bai', [$khoaHoc->slug, $deThi->slug]) }}">
+            @csrf
+            <div id="noi-dung-cau-hoi">
+                <!-- Nội dung câu hỏi sẽ được hiển thị ở đây khi chọn radio button -->
             </div>
-            <form id="quiz-form" method="POST" action="{{ route('nop-bai', [$khoaHoc->slug, $deThi->slug]) }}">
+            <button type="submit" class="btn btn-primary">Kết thúc bài thi</button>
+        </form>
+
+        {{-- <form id="quiz-form" method="POST" action="{{ route('nop-bai', [$khoaHoc->slug, $deThi->slug]) }}">
                 @csrf
                 @php
                     $thuTu = 1;
@@ -57,71 +79,91 @@
                     </div>
                 @endforeach
                 <button type="submit" class="btn btn-primary">Kết thúc bài thi</button>
-            </form>
-        </div>
-        <hr>
+            </form> --}}
+        <hr class="table-group-divider">
     </div>
 @endsection
+@push('styles')
+    <style>
+        .btn-cauhoi {
+            background-color: #127f2b;
+            color: white;
+            border: none;
+            margin: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .btn-cauhoi.active {
+            background-color: #22953b;
+        }
+    </style>
+@endpush
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var timer = new easytimer.Timer();
-            var quizDuration = 19 * 60; // 19 minutes in seconds
-            var testId = '{{ $deThi->id }}'; // Unique identifier for the test
+        let timer;
+        let seconds = 19 * 60;
 
-            function startTimer(duration) {
-                timer.start({
-                    countdown: true,
-                    startValues: {
-                        seconds: duration
+        function startTimer() {
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            seconds--;
+            if (seconds < 0) {
+                clearInterval(timer);
+                document.getElementById('quiz-form').submit();
+            } else {
+                let minutes = Math.floor(seconds / 60);
+                let remainingSeconds = seconds % 60;
+                document.getElementById('time').innerText = minutes + ":" + (remainingSeconds < 10 ? "0" +
+                    remainingSeconds : remainingSeconds);
+            }
+        }
+        startTimer();
+    </script>
+    <script>
+        $(document).ready(function() {
+            let userAnswers = {};
+
+            $('input[name="cau_hoi_id"]').change(function() {
+                var questionId = $(this).data('id');
+                loadQuestion(questionId);
+            });
+
+            function loadQuestion(questionId) {
+                $.ajax({
+                    url: '/cau-hoi/' + questionId,
+                    method: 'GET',
+                    success: function(response) {
+                        let cauHoiHtml = '<div class="card mb-3">' +
+                            '<div class="card-body">' +
+                            '<h5>Câu hỏi:</h5>' +
+                            '<b class="text-primary fs-5">' + response.noi_dung + '</b><br>';
+                        if (response.hinh_anh) {
+                            cauHoiHtml += '<img src="' + response.hinh_anh +
+                                '" alt="" class="img-fluid"><br>';
+                        }
+                        response.phuong_ans.forEach(function(phuongAn) {
+                            const checked = userAnswers[response.id] == phuongAn.id ?
+                                'checked' : '';
+                            cauHoiHtml += '<div class="form-group">' +
+                                '<input id="phuong_an_' + phuongAn.id +
+                                '" type="radio" name="dap_an_id[' + response.id +
+                                ']" class="form-check-inline" value="' + phuongAn.id + '" ' +
+                                checked + '<label for="phuong_an_' + phuongAn.id +
+                                '" class="form-label fs-5">' + phuongAn.noi_dung + '</label>' +
+                                '</div>';
+                        });
+                        cauHoiHtml += '</div></div>';
+                        $('#noi-dung-cau-hoi').html(cauHoiHtml);
+
+                        $('input[name="dap_an_id[' + response.id + ']"]').change(function() {
+                            userAnswers[response.id] = $(this).val();
+                        });
                     }
                 });
             }
-
-            function getElapsedTime() {
-                var startTime = localStorage.getItem('quizStartTime_' + testId);
-                if (startTime) {
-                    var currentTime = Math.floor(Date.now() / 1000);
-                    return currentTime - startTime;
-                }
-                return 0;
-            }
-
-            var elapsedTime = getElapsedTime();
-            if (elapsedTime < quizDuration) {
-                var remainingTime = quizDuration - elapsedTime;
-                startTimer(remainingTime);
-
-                timer.addEventListener('secondsUpdated', function(e) {
-                    document.querySelector('#time').textContent = timer.getTimeValues().toString(['minutes',
-                        'seconds'
-                    ]);
-                });
-
-                timer.addEventListener('targetAchieved', function(e) {
-                    document.getElementById('quiz-form').submit();
-                });
-            } else {
-                document.getElementById('quiz-form').submit();
-            }
-
-            if (!localStorage.getItem('quizStartTime_' + testId)) {
-                localStorage.setItem('quizStartTime_' + testId, Math.floor(Date.now() / 1000));
-            }
-
-            // Xác nhận trước khi nộp bài
-            document.getElementById('quiz-form').addEventListener('submit', function(event) {
-                if (!confirm('Bạn có chắc chắn muốn nộp bài không?')) {
-                    event.preventDefault();
-                }
-            });
-
-            // Xác nhận trước khi đóng tab
-            window.addEventListener('beforeunload', function(event) {
-                event.preventDefault();
-                event.returnValue =
-                    'Bạn có chắc chắn muốn rời khỏi trang này? Mọi thay đổi sẽ không được lưu lại.';
-            });
         });
     </script>
 @endpush
