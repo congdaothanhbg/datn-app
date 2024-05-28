@@ -30,25 +30,24 @@
                 <div class="row">
                     <div class="col-lg-8 col-12">
                         <div class="row">
-                            @foreach ($dsBaiViet as $post)
+                            @foreach ($dsBaiViet as $baiViet)
                                 <div class="col-lg-6 col-md-6 col-12 mb-3">
                                     <div class="shop-single-post">
-                                        <img src="{{ $post->hinh_anh }}" alt="{{ $post->hinh_anh }}">
+                                        <img src="{{ $baiViet->hinh_anh }}" alt="{{ $baiViet->hinh_anh }}">
                                         <div class="content">
                                             <p class="date">
                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                {{ $post->created_at->format('d/m/Y') }}
+                                                {{ $baiViet->created_at->format('d/m/Y') }}
                                                 <span class="float-right">
                                                     <i class="fa fa-user" aria-hidden="true"></i>
-                                                    {{ $post->author_info->name ?? 'Không xác định' }}
+                                                    {{ $baiViet->author_info->name ?? 'Không xác định' }}
                                                 </span>
                                             </p>
-                                            <a href="{{ route('bai-viet.detail', $post->slug) }}"
+                                            <a href="{{ route('bai-viet.detail', $baiViet->slug) }}"
                                                 class="title">
-                                                {{ $post->tieu_de }}
+                                                {{ $baiViet->ten_bai_viet }}
                                             </a>
-                                            <p>{!! html_entity_decode($post->summary) !!}</p>
-                                            <a href="{{ route('bai-viet.detail', $post->slug) }}"
+                                            <a href="{{ route('bai-viet.detail', $baiViet->slug) }}"
                                                 class="btn btn-primary text-white">
                                                 Chi tiết
                                             </a>

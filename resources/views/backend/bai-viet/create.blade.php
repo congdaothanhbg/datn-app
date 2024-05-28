@@ -51,7 +51,7 @@
                     <select name="danh_muc_id" class="form-control">
                         <option value="">--Chọn danh mục bài viết--</option>
                         @foreach ($dsDanhMuc as $danhMuc)
-                            <option value='{{ $danhMuc->id }}'>{{ $danhMuc->tieu_de }}</option>
+                            <option value='{{ $danhMuc->id }}'>{{ $danhMuc->ten_danh_muc }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -69,7 +69,7 @@
                     <label for="thumbnail" class="form-label">Hình ảnh <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+                            <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary text-white">
                                 <i class="fa fa-picture-o"></i> Chọn
                             </a>
                         </span>

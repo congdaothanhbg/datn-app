@@ -64,7 +64,7 @@
                                     <th>{{ $baiGiang->id }}</th>
                                     <td>{{ $baiGiang->thu_tu }}</td>
                                     <td>{{ $baiGiang->ten_bai_giang }}</td>
-                                    <td>{{ $baiGiang->noi_dung }}</td>
+                                    <td>{!! $baiGiang->noi_dung !!}</td>
                                     <td class="col-2">{{ $baiGiang->hinh_anh }}</td>
                                     <td class="col-2">{{ $baiGiang->video }}</td>
                                     <td>{{ $baiGiang->trang_thai }}</td>
